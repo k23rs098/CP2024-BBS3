@@ -237,18 +237,18 @@ function cancelEdit(postId) {
     postElement.find('textarea').val('');
 }
 
-// 投稿の更新：バグ入りなので要修正（更新せずに削除してしまう）
+// 投稿の更新
 function updatePost(postId) {
     const contentVal = $(`#edit-${postId}`).val();
     if (!validateContent(contentVal)) return;
 
     // content の内容を変更し、updatedAt フィールドを付加して、更新後の投稿内容を生成
-    postsRef.child(postId).update({
+    const updates = {
         content: contentVal,
         updatedAt: firebase.database.ServerValue.TIMESTAMP
-    });
+    };
 
-    postsRef.child(postId).update()
+    postsRef.child(postId).update(updates)
         .then(() => {
             showMessage('投稿を更新しました');
             $(`#post-${postId}`).removeClass('editing');
